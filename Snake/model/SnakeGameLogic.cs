@@ -1,3 +1,5 @@
+using Snake.view;
+
 namespace Snake.model 
 {
     internal class SnakeGameLogic : BaseGameLogic
@@ -28,9 +30,9 @@ namespace Snake.model
             gameplayState.setDirection(SnakeDirection.Right);
         }
 
-        public override void update(float deltaTime)
+        public override void update(float deltaTime, ConsoleRenderer renderer)
         {
-            gameplayState.update(deltaTime);
+            gameplayState.update(deltaTime, renderer);
         }
     }
 }

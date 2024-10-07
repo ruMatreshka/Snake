@@ -1,4 +1,5 @@
 using Snake.controller;
+using Snake.view;
 
 namespace Snake.model {
     internal abstract class BaseGameLogic : IArrowListener
@@ -8,7 +9,7 @@ namespace Snake.model {
         public abstract void onArrowLeft();
         public abstract void onArrowRight();
        
-        public abstract void update(float deltaTime);      
+        public abstract void update(float deltaTime, ConsoleRenderer renderer);      
 
         public void InitializeInput(ConsoleInput input)
         {

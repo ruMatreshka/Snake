@@ -7,17 +7,16 @@ namespace Snake.controller
         public void subscribe(IArrowListener l)
         {
             arrowListeners.Add(l);
-        }      
-
+        }
 
         public void update()
         {
             while (Console.KeyAvailable)
             {
-                var key = Console.ReadKey();
+                var key = Console.ReadKey(true);
 
                 switch (key.Key)
-                {                   
+                {
                     case ConsoleKey.UpArrow or ConsoleKey.W:
                         foreach (var listener in arrowListeners) listener.onArrowUp();
                         break;

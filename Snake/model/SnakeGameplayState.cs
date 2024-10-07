@@ -1,3 +1,6 @@
+using System.Diagnostics;
+using Snake.view;
+
 namespace Snake.model
 {
     internal class SnakeGamePlayState : BaseGameState
@@ -15,13 +18,14 @@ namespace Snake.model
         public override void reset()
         {
             body.Clear();
-            currentDirection = SnakeDirection.Left;
+            currentDirection = SnakeDirection.Right;
             body.Add(new(0, 0));
             timeToMove = 0f;
         }
 
-        public override void update(float deltaTime)
+        public override void update(float deltaTime, ConsoleRenderer renderer)
         {
+            renderer.Clear();
             timeToMove -= deltaTime;
             if (timeToMove > 0f)
                 return;
@@ -33,7 +37,18 @@ namespace Snake.model
             body.RemoveAt(body.Count - 1);
             body.Insert(0, nextCell);
 
-            Console.WriteLine($"{body[0].x}, {body[0].y}");
+            if (nextCell.x < 0 || nextCell.y < 0)
+            {
+                renderer.DrawString("END GAME!!!", (int)Math.Ceiling(renderer.width / 2d) - 5, (int)Math.Ceiling(renderer.height / 2d), ConsoleColor.Red);
+                renderer.Render();
+                Environment.Exit(0);
+            }
+            else
+            {
+                renderer.SetPixel(nextCell.x, nextCell.y, '■', 1);
+                renderer.Render();
+            }
+
         }
 
         private Cell shiftTo(Cell from, SnakeDirection toDirection)
@@ -41,9 +56,9 @@ namespace Snake.model
             switch (toDirection)
             {
                 case SnakeDirection.Up:
-                    return new Cell(from.x, from.y + 1);
-                case SnakeDirection.Down:
                     return new Cell(from.x, from.y - 1);
+                case SnakeDirection.Down:
+                    return new Cell(from.x, from.y + 1);
                 case SnakeDirection.Left:
                     return new Cell(from.x - 1, from.y);
                 case SnakeDirection.Right:

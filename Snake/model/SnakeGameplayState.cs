@@ -37,7 +37,7 @@ namespace Snake.model
             body.RemoveAt(body.Count - 1);
             body.Insert(0, nextCell);
 
-            if (nextCell.x < 0 || nextCell.y < 0)
+            if (nextCell.x < 0 || nextCell.y < 0 || nextCell.x >= renderer.width || nextCell.y >= renderer.height)
             {
                 renderer.DrawString("END GAME!!!", (int)Math.Ceiling(renderer.width / 2d) - 5, (int)Math.Ceiling(renderer.height / 2d), ConsoleColor.Red);
                 renderer.Render();

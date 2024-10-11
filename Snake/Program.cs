@@ -1,28 +1,52 @@
 ﻿
-using System.Runtime.InteropServices;
+
 using Snake.controller;
 using Snake.model;
 using Snake.view;
 
 internal class Program
 {
-    public static void Main()
+    const float targetFrameTime = 1f / 60f;
+
+    static void Main()
     {
         var gameLogic = new SnakeGameLogic();
-        var renderer = new ConsoleRenderer([ConsoleColor.Black, ConsoleColor.White, ConsoleColor.Red]);
+
+        var palette = gameLogic.CreatePalette();
+
+        var renderer0 = new ConsoleRenderer(palette);
+        var renderer1 = new ConsoleRenderer(palette);
 
         var input = new ConsoleInput();
         gameLogic.InitializeInput(input);
-        gameLogic.GotoGameplay();
 
+        var prevRenderer = renderer0;
+        var currRenderer = renderer1;
         var lastFrameTime = DateTime.Now;
         while (true)
         {
-            input.update();
             var frameStartTime = DateTime.Now;
             float deltaTime = (float)(frameStartTime - lastFrameTime).TotalSeconds;
-            gameLogic.update(deltaTime, renderer);
+            input.update();
+
+            gameLogic.DrawNewState(deltaTime, currRenderer);
             lastFrameTime = frameStartTime;
+
+            if (!currRenderer.Equals(prevRenderer)) currRenderer.Render();
+
+            var tmp = prevRenderer;
+            prevRenderer = currRenderer;
+            currRenderer = tmp;
+            currRenderer.Clear();
+
+            var nextFrameTime = frameStartTime + TimeSpan.FromSeconds(targetFrameTime);
+            var endFrameTime = DateTime.Now;
+            if (nextFrameTime > endFrameTime)
+            {
+                Thread.Sleep((int)(nextFrameTime - endFrameTime).TotalMilliseconds);
+            }
         }
     }
+
+
 }

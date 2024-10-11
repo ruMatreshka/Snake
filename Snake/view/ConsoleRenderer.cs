@@ -1,4 +1,6 @@
-﻿namespace Snake.view
+﻿using System.Diagnostics;
+
+namespace Snake.view
 {
     internal class ConsoleRenderer
     {
@@ -12,11 +14,11 @@
         private readonly int _maxWidth;
         private readonly int _maxHeight;
 
-        public ConsoleColor bgColor {  get; set; }
+        public ConsoleColor bgColor { get; set; }
 
         public char this[int w, int h]
         {
-            get {  return _pixels[w, h]; }
+            get { return _pixels[w, h]; }
             set { _pixels[w, h] = value; }
         }
 
@@ -49,6 +51,7 @@
 
         public void Render()
         {
+            Debug.WriteLine("RENDER");
             Console.Clear();
             Console.BackgroundColor = bgColor;
 
@@ -78,10 +81,10 @@
             if (colorIdx < 0)
                 return;
 
-            for (int i=0; i<text.Length; i++)
+            for (int i = 0; i < text.Length; i++)
             {
                 _pixels[atWidth + i, atHeight] = text[i];
-                _pixelColors[atWidth + i, atHeight] = (byte) colorIdx;
+                _pixelColors[atWidth + i, atHeight] = (byte)colorIdx;
             }
         }
 
@@ -91,7 +94,7 @@
                 for (int h = 0; h < height; h++)
                 {
                     _pixelColors[w, h] = 0;
-                    _pixels[w, h] = (char) 0;
+                    _pixels[w, h] = (char)0;
                 }
         }
 
@@ -108,7 +111,7 @@
             }
 
 
-            for (int i=0; i<_colors.Length; i++)
+            for (int i = 0; i < _colors.Length; i++)
             {
                 if (_colors[i] != casted._colors[i])
                     return false;
@@ -131,7 +134,7 @@
         {
             var hash = HashCode.Combine(_maxWidth, _maxHeight, width, height);
 
-            for (int i=0; i<_colors.Length; i++)
+            for (int i = 0; i < _colors.Length; i++)
             {
                 hash = HashCode.Combine(hash, _colors[i]);
             }
